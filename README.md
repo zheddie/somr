@@ -18,4 +18,5 @@ This project is for SOM++ running on OMR. The target of this project is to enabl
 # References
 
 SOM++ code base is coming from http://www.hpi.uni-potsdam.de/hirschfeld/projects/som/
+
 OMR project: https://github.com/eclipse/omr
