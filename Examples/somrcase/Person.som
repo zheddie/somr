@@ -1,0 +1,10 @@
+Person = (
+	| name |
+	getName 	 = ( ^name. )
+	setName: str = ( name := str. )
+	
+	----
+	| age |
+	getAge		= ( ^age. )
+	setAge: n = ( age := n. )
+)

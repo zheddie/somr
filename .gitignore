@@ -1,0 +1,8 @@
+.project
+.cproject
+*.o
+*.dynlib
+somr
+CORE
+SOMCore.csp
+*.swp

@@ -1,0 +1,27 @@
+Hello = (
+	run = (
+		| p |
+		p := Person new.
+		p setName: 'Tom'.
+		p getName println. "This will println 'Tom' "
+		
+		"
+		but if call getAge or setAge through p, it will failed 
+		and an error'ERROR: Method setAge: not found in class Person' is thrown out.
+		
+		p setAge: 10.
+		p getAge println.
+		"
+		
+		"If you call setAge or getAge through Person, it works."
+		Person setAge: 10.
+		Person getAge println.
+		
+		"If you call setName or getName through Person, it failed 
+		and error 'ERROR: Method setName: not found in class Person class' is throw out.
+		
+		Person setName: 'John'.
+		Person getName println.
+		"
+	)
+)
