@@ -1,7 +1,7 @@
 # SOMR project.
 This project is for SOM++ running on OMR. The target of this project is to enable SOM++ works on OMR, leveraging the GC, JIT , RAS etc from OMR.
 
-Base code is coming from http://www.hpi.uni-potsdam.de/hirschfeld/projects/som/
+
 
 # To make it work on your mac:
 	git clone https://github.com/zheddie/somr
@@ -15,3 +15,7 @@ Base code is coming from http://www.hpi.uni-potsdam.de/hirschfeld/projects/som/
 # To make it work on your linux: TODO.
 	
 
+# References
+
+SOM++ code base is coming from http://www.hpi.uni-potsdam.de/hirschfeld/projects/som/
+OMR project: https://github.com/eclipse/omr
