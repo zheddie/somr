@@ -286,8 +286,10 @@ void Interpreter::doPushGlobal( int bytecodeIndex) {
         int additionalStackSlots = 2 - _FRAME->RemainingStackSize();       
         if (additionalStackSlots > 0) {
             //copy current frame into a bigger one and replace the current frame
-            this->SetFrame(VMFrame::EmergencyFrameFrom(_FRAME,
-                           additionalStackSlots));
+//            this->SetFrame(VMFrame::EmergencyFrameFrom(_FRAME,
+//                           additionalStackSlots));
+        		VMFrame::EmergencyFrameFrom(_FRAME,
+        	                           additionalStackSlots);
         }
 
         self->Send(uG, arguments, 1);

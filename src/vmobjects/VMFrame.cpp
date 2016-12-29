@@ -40,7 +40,7 @@ THE SOFTWARE.
 pVMFrame VMFrame::EmergencyFrameFrom( pVMFrame from, int extraLength ) {
     int length = from->GetNumberOfIndexableFields() + extraLength;
     int additionalBytes = length * sizeof(pVMObject);
-    pVMFrame result = new (_HEAP, additionalBytes) VMFrame(length,from->GetMethod(),from->GetPreviousFrame(),true);
+    pVMFrame result = new (_HEAP, additionalBytes) VMFrame(length,from->GetMethod(),from,true);
     
 //    result->SetClass(from->GetClass()); 	///Should be frameClass, shouldn't it?
 //    //copy arguments, locals and the stack
@@ -147,7 +147,8 @@ int VMFrame::RemainingStackSize() const {
 
 pVMObject VMFrame::Pop() {
     int32_t sp = this->stackPointer->GetEmbeddedInteger();
-    if(sp<0) printf("SOMR.ERROR, sp=%d, which is too small\n",sp);
+    if(sp<0)
+    		printf("SOMR.ERROR, sp=%d, which is too small\n",sp);
     this->stackPointer->SetEmbeddedInteger(sp-1);
     pVMObject po = (*this)[sp];
     (*this)[sp] = nilObject;
@@ -157,7 +158,8 @@ pVMObject VMFrame::Pop() {
 
 void      VMFrame::Push(pVMObject obj) {
     int32_t sp = this->stackPointer->GetEmbeddedInteger() + 1;
-    if(sp >= this->GetNumberOfIndexableFields()) printf("SOMR.ERROR, sp=%d, which is bigger than indexable fields index(%d)\n",sp,this->GetNumberOfIndexableFields()-1);
+    if(sp >= this->GetNumberOfIndexableFields())
+    		printf("SOMR.ERROR, sp=%d, which is bigger than indexable fields index(%d)\n",sp,this->GetNumberOfIndexableFields()-1);
     this->stackPointer->SetEmbeddedInteger(sp);
     (*this)[sp] = obj; 
 }
