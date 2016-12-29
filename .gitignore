@@ -6,3 +6,5 @@ somr
 CORE
 SOMCore.csp
 *.swp
+*.so
+*.dylib

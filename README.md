@@ -11,6 +11,7 @@ This project is for SOM++ running on OMR. The target of this project is to enabl
 	make
 	cd ../somr
 	make
+	./somr -cp Smalltalk Examples/Hello/Hello.som
 
 # To make it work on your linux(this works on REDHL):
 	git clone https://github.com/zheddie/somr
@@ -20,6 +21,7 @@ This project is for SOM++ running on OMR. The target of this project is to enabl
 	make
 	cd ../somr
 	make
+	./somr -cp Smalltalk Examples/Hello/Hello.som
 
 
 # References
