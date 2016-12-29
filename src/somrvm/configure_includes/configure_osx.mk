@@ -20,8 +20,9 @@ TEMP_TARGET_DATASIZE:=64
 
 include $(CONFIG_INCL_DIR)/configure_common.mk
 
+#  --enable-OMR_EXAMPLE
+
 CONFIGURE_ARGS += \
-  --enable-OMR_EXAMPLE \
   --enable-OMR_GC \
   --enable-OMR_JIT \
   --enable-OMR_PORT \

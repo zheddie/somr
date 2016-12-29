@@ -16,13 +16,14 @@
 #    Multiple authors (IBM Corp.) - initial implementation and documentation
 ###############################################################################
 
+# --enable-OMR_EXAMPLE 
+#  --enable-fvtest
+
 CONFIGURE_ARGS += \
-  --enable-OMR_EXAMPLE \
   --enable-OMR_GC \
   --enable-OMR_PORT \
   --enable-OMR_THREAD \
   --enable-OMR_OMRSIG \
-  --enable-fvtest \
   --enable-OMR_GC_SEGREGATED_HEAP \
   --enable-OMR_GC_MODRON_SCAVENGER \
   --enable-OMR_GC_MODRON_CONCURRENT_MARK \
