@@ -26,16 +26,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+OMR_DIR=../omr
+
 CC			=g++
 CFLAGS		=-Wno-endif-labels -O3 $(DBG_FLAGS) $(INCLUDES)
 LDFLAGS		=$(LIBRARIES)
+
+CFLAGS +=-DUT_DIRECT_TRACE_REGISTRATION -DLINUX
+CFLAGS +=-I${SRC_DIR}/somrvm
+CFLAGS +=-I${SRC_DIR}/vmobjects
+CFLAGS +=-I${OMR_DIR}/include_core
+CFLAGS +=-I${OMR_DIR}/gc/include
+CFLAGS +=-I${OMR_DIR}/gc/base
+CFLAGS +=-I${OMR_DIR}/gc/verbose
+CFLAGS +=-I${OMR_DIR}/gc/verbose/handler_standard
+CFLAGS +=-I${OMR_DIR}/gc/stats
+CFLAGS +=-I${OMR_DIR}/gc/structs
+CFLAGS +=-I${OMR_DIR}/gc/base/standard
+CFLAGS +=-I${OMR_DIR}/gc/startup
+CFLAGS +=-I${OMR_DIR}/gc/base/segregated
+
+OMR_LIBS =-L. -L${OMR_DIR} -L${OMR_DIR}/lib -Xlinker -lj9omr \
+-lomrgcbase -lomrgcstructs -lomrgcstats -lomrgcstandard -lomrgcstartup \
+ -lj9hookstatic -lj9prtstatic -lj9thrstatic -lomrgcverbose -lomrgcverbosehandlerstandard \
+  -lomrutil -lj9avl -lj9hashtable \
+ -lj9pool -lomrtrace -lomrvmstartup -Xlinker -lm -lpthread -lc -ldl -lutil
 
 INSTALL		=install
 
 CSOM_LIBS	=
 CORE_LIBS	=-lm
 
-CSOM_NAME	=SOM++
+CSOM_NAME	=somr
 CORE_NAME	=SOMCore
 PRIMITIVESCORE_NAME  =PrimitiveCore
 SHARED_EXTENSION    =so
@@ -60,6 +82,7 @@ MEMORY_DIR 		= $(SRC_DIR)/memory
 MISC_DIR 		= $(SRC_DIR)/misc
 VM_DIR 			= $(SRC_DIR)/vm
 VMOBJECTS_DIR 	= $(SRC_DIR)/vmobjects
+GLUE_DIR		=$(SRC_DIR)/somrvm
 
 COMPILER_SRC	= $(wildcard $(COMPILER_DIR)/*.cpp)
 COMPILER_OBJ	= $(COMPILER_SRC:.cpp=.o)
@@ -78,6 +101,12 @@ MAIN_SRC		= $(wildcard $(SRC_DIR)/*.cpp)
 #$(SRC_DIR)/Main.cpp
 MAIN_OBJ		= $(MAIN_SRC:.cpp=.o)
 #$(SRC_DIR)/main.o
+######GLUE source
+GLUE_SRC                        = $(wildcard $(GLUE_DIR)/*.cpp)
+
+GLUE_SRC                        += $(wildcard $(GLUE_DIR)/*.c)
+GLUE_OBJ1                       = $(GLUE_SRC:.cpp=.o)
+GLUE_OBJ                        += $(GLUE_OBJ1:.c=.o)
 
 ############# primitives loading
 
@@ -100,13 +129,13 @@ LIBRARIES		=-L$(ROOT_DIR)
 ############## Collections.
 
 CSOM_OBJ		=  $(MEMORY_OBJ) $(MISC_OBJ) $(VMOBJECTS_OBJ) \
-				$(COMPILER_OBJ) $(INTERPRETER_OBJ) $(VM_OBJ)
+				$(COMPILER_OBJ) $(INTERPRETER_OBJ) $(VM_OBJ) $(GLUE_OBJ)
 
 OBJECTS			= $(CSOM_OBJ) $(PRIMITIVESCORE_OBJ) $(PRIMITIVES_OBJ) $(MAIN_OBJ)
 
 SOURCES			=  $(COMPILER_SRC) $(INTERPRETER_SRC) $(MEMORY_SRC) \
 				$(MISC_SRC) $(VM_SRC) $(VMOBJECTS_SRC)  \
-				$(PRIMITIVES_SRC) $(PRIMITIVESCORE_SRC) $(MAIN_SRC)
+				$(PRIMITIVES_SRC) $(PRIMITIVESCORE_SRC) $(GLUE_SRC) $(MAIN_SRC)
 
 ############# Things to clean
 
@@ -144,8 +173,9 @@ profiling: all
 	$(CC) $(CFLAGS) -fPIC -c $< -o $*.pic.o
 
 .cpp.o:
-	$(CC) $(CFLAGS) -c $< -o $*.o
-
+	$(CC) $(CFLAGS) -fPIC -c $< -o $*.o
+.c.o:
+	$(CC) $(CFLAGS) -fPIC -c $< -o $*.o
 clean:
 	rm -Rf $(CLEAN)
 
@@ -160,13 +190,13 @@ clean:
 $(CSOM_NAME): $(CSOM_NAME).$(SHARED_EXTENSION) $(MAIN_OBJ)
 	@echo Linking $(CSOM_NAME) loader
 	$(CC) $(LDFLAGS) \
-		-o $(CSOM_NAME) $(MAIN_OBJ) $(CSOM_NAME).$(SHARED_EXTENSION) -ldl
+		-o $(CSOM_NAME) $(MAIN_OBJ) $(CSOM_NAME).$(SHARED_EXTENSION) -ldl $(OMR_LIBS)
 	@echo CSOM done.
 
 $(CSOM_NAME).$(SHARED_EXTENSION): $(CSOM_OBJ)
 	@echo Linking $(CSOM_NAME) Dynamic Library
 	$(CC) $(LDFLAGS) -shared \
-		-o $(CSOM_NAME).$(SHARED_EXTENSION) $(CSOM_OBJ) $(CSOM_LIBS)
+		-o $(CSOM_NAME).$(SHARED_EXTENSION) $(CSOM_OBJ) $(CSOM_LIBS) $(OMR_LIBS)
 	@echo CSOM done.
 
 $(PRIMITIVESCORE_NAME).$(SHARED_EXTENSION): $(CSOM_NAME) $(PRIMITIVESCORE_OBJ)

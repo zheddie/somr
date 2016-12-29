@@ -30,6 +30,10 @@ THE SOFTWARE.
 
 
 #include <string>
+#if defined(LINUX)
+#include <stdint.h>
+#include <stdio.h>
+#endif
 //
 // error codes
 //
