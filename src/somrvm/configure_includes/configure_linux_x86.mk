@@ -28,6 +28,7 @@ include $(CONFIG_INCL_DIR)/configure_common.mk
 #  --enable-OMR_EXAMPLE
 
 CONFIGURE_ARGS += \
+  --enable-OMR_RTTI \
   --enable-OMR_GC \
   --enable-OMR_JIT \
   --enable-OMR_PORT \
