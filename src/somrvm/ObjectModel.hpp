@@ -38,7 +38,6 @@ class MM_GCExtensionsBase;
 
 #define J9_GC_OBJECT_ALIGNMENT_IN_BYTES 0x8
 //#define J9_GC_MINIMUM_OBJECT_SIZE 0x10
-//zg. For som++, vmobject is 24.
 #define J9_GC_MINIMUM_OBJECT_SIZE 48
 
 /**
